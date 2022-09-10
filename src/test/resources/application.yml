@@ -1,9 +1,14 @@
 spring:
   datasource:
-    url: jdbc:h2:tcp://localhost/~/kissco-dic
-    driver-class-name: org.h2.Driver
-    username: sa
-    password:
+
+    url: ${CLEARDB_DATABASE_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  #    url: jdbc:h2:tcp://localhost/~/kissco-dic
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password:
   #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/KISSCO_DIC
 #    password: dnjswhdtj1!
