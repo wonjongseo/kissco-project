@@ -15,3 +15,5 @@ public interface UserController {
     ResponseEntity<List<Voca>> getAllVoca(Integer page,HttpServletRequest request);
 
 }
+
+
