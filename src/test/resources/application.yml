@@ -1,0 +1,42 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/kissco-dic
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  #    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/KISSCO_DIC
+#    password: dnjswhdtj1!
+#    username: root
+  jpa: #
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+
+jwt:
+  header: Authorization
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
+  token-validity-in-seconds: 86400
+
+  logging:
+    level:
+      me.silvernine: DEBUG
+
+
+cloud:
+  aws:
+    credentials:
+      accessKey: AKIA2LW236WZIRVEZPGO
+      secretKey: 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
+    s3:
+      bucket: kissco-dic
+      dir: /voca
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
