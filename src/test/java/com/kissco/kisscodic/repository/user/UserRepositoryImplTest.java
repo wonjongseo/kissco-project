@@ -2,13 +2,12 @@ package com.kissco.kisscodic.repository.user;
 
 import com.kissco.kisscodic.dto.user.JoinDto;
 import com.kissco.kisscodic.entity.User;
-import com.kissco.kisscodic.exception.CUserException;
+import com.kissco.kisscodic.exception.CustomException;
 import com.kissco.kisscodic.service.user.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +41,7 @@ public class UserRepositoryImplTest {
         assertEquals(user, foundUser);
     }
 
-    @Test(expected = CUserException.class)
+    @Test(expected = CustomException.class)
     public void checkDuplicateEmailAndPasswordCheck() {
 
         JoinDto joinDto = new JoinDto();

@@ -113,7 +113,6 @@ public class VocaServiceImplTest {
         Voca voca2 = vocaService.createVoca(vocaDO2, userId);
 
 
-
         User user = userService.findById(userId);
 
         UserVoca userVoca = new UserVoca();
@@ -133,7 +132,7 @@ public class VocaServiceImplTest {
         for (int i = 0; i < userVocas.size(); i++) {
             System.out.println("userVocas.get(i).getVoca().getWord() = " + userVocas.get(i).getVoca().getWord());
         }
-        
+
         // given
 
         // when
@@ -141,6 +140,55 @@ public class VocaServiceImplTest {
         // then
     }
 
+    @Test
+    public void deteleUserOfVoca()throws Exception {
+    // given
+        joinDto.setEmail("visionwill");
+        joinDto.setPassword("1234");
+        joinDto.setPassword2("1234");
+        joinDto.setUsername("종서");
+
+        loginDto.setEmail("visionwill");
+        loginDto.setPassword("1234");
+
+        userService.addUser(joinDto);
+        Long userId = userService.login(loginDto);
+
+        String word = "공부";
+
+        VocaDO vocaDO = new VocaDO();
+        vocaDO.setWord(word);
+        vocaDO.setSource("ko");
+
+        String word2 = "멋쟁이";
+
+        VocaDO vocaDO2 = new VocaDO();
+        vocaDO2.setWord(word2);
+        vocaDO2.setSource("ko");
+
+        Voca voca = vocaService.createVoca(vocaDO, userId);
+        Voca voca2 = vocaService.createVoca(vocaDO2, userId);
+
+
+        User user = userService.findById(userId);
+
+        UserVoca userVoca = new UserVoca();
+        userVoca.setVoca(voca);
+
+        user.addUserVoca(userVoca);
+
+        UserVoca userVoca2 = new UserVoca();
+        userVoca2.setVoca(voca2);
+
+        user.addUserVoca(userVoca2);
+
+
+        // when
+
+        
+
+    // then
+    }
 
 
 }

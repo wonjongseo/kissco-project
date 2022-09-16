@@ -3,7 +3,7 @@ package com.kissco.kisscodic.service.user;
 import com.kissco.kisscodic.dto.user.JoinDto;
 import com.kissco.kisscodic.dto.user.LoginDto;
 import com.kissco.kisscodic.entity.User;
-import com.kissco.kisscodic.exception.CUserException;
+import com.kissco.kisscodic.exception.CustomException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class UserServiceImplTest {
     @Autowired
     UserService userService;
 
-    @Test(expected = CUserException.class)
+    @Test(expected = CustomException.class)
     public void checkWrongPassword() {
 
         JoinDto joinDto = new JoinDto();

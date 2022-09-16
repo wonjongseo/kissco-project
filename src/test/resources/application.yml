@@ -1,6 +1,5 @@
 spring:
   datasource:
-
     url: ${CLEARDB_DATABASE_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}

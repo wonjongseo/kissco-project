@@ -12,6 +12,5 @@ public interface VocaController {
     List<Voca> getVocasForTest(Long userId, String source, Integer start, Integer end);
 
     Voca addVoca(VocaDO vocaDO, HttpServletRequest request);
-
     String addVoca(VocaDO vocaDO);
 }

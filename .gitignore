@@ -3,7 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+application-db.yml
+application-papago.yml
 ### STS ###
 .apt_generated
 .classpath

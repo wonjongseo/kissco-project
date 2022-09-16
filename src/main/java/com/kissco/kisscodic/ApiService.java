@@ -4,8 +4,9 @@ package com.kissco.kisscodic;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+//256.16
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -17,10 +18,12 @@ import java.util.Map;
 
 @Service
 public class ApiService {
-
-    static String clientId = "4HhVSPcAZaA4F_6snB1x";
-    static String clientSecret = "dk9airxklJ";
-    static String apiURL = "https://openapi.naver.com/v1/papago/n2mt";
+    @Value("${papago.clientId}")
+    private String clientId;
+    @Value("${papago.clientSecret}")
+    private String clientSecret;
+    @Value("${papago.apiURL}")
+    private String apiURL;
 
     public String getMean(String word , String source) throws ParseException {
 
@@ -44,10 +47,7 @@ public class ApiService {
         JSONObject message = (JSONObject)jsonObject.get("message");
 
         JSONObject result = (JSONObject)message.get("result");
-
-
         String mean = (String) result.get("translatedText");
-        System.out.println("mean = " + mean);
         return mean;
     }
 
@@ -58,8 +58,6 @@ public class ApiService {
         if (source.equals("ja")) {
             target = "ko";
         }
-        System.out.println("target = " + target);
-        System.out.println("source = " + source);
 
         HttpURLConnection con = connect(apiURL);
 
