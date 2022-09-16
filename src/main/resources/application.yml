@@ -18,6 +18,11 @@ spring:
 logging.level:
   org.hibernate.SQL: debug
 
+papago:
+  clientId: ${PAPAGO_CLIENT_ID}
+  clientSecret: ${PAPAGO_CLIENT_SECRET}
+  apiURL: ${PAPAGO_API_URL}
+
 jwt:
   header: Authorization
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
