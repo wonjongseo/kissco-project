@@ -3,12 +3,14 @@ package com.kissco.kisscodic.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 
 import static com.kissco.kisscodic.exception.ErrorCode.DUPLICATE_RESOURCE;
+import static com.kissco.kisscodic.exception.ErrorCode.INVALID_AUTHENTICATION;
 
 @Slf4j
 @RestControllerAdvice
@@ -19,6 +21,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleDataException(){
         log.error("handleDataException throw Exception : {}", DUPLICATE_RESOURCE);
         return ErrorResponse.toResponseEntity(DUPLICATE_RESOURCE);
+    }
+
+    @ExceptionHandler(value = {ServletRequestBindingException.class})
+    public ResponseEntity<ErrorResponse> handleAuthenticate(){
+        log.error("handleDataException throw Exception : {}", INVALID_AUTHENTICATION);
+        return ErrorResponse.toResponseEntity(INVALID_AUTHENTICATION);
     }
 
     @ExceptionHandler(value = { CustomException.class })

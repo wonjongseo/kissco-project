@@ -36,10 +36,7 @@ public class UserRepositoryImpl implements UserRepository {
     public List<Voca> findWord(Long userId, String word) {
         return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.id = :userId and v.word = :word", Voca.class).setParameter("userId", userId).setParameter("word", word).getResultList();
     }
-    @Override
-    public List<Voca> findMean(Long userId, String mean) {
-        return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.id = :userId and v.mean = :mean", Voca.class).setParameter("userId", userId).setParameter("mean", mean).getResultList();
-    }
+
 
 
     @Override
@@ -56,6 +53,23 @@ public class UserRepositoryImpl implements UserRepository {
         return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.id = :userId ", Voca.class)
                 .setParameter("userId", userId)
                 .getResultList();
+    }
+
+    @Override
+    public List<Voca> findWordsForTest(Long userId, Integer start, Integer end) {
+        return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.id = :userId ", Voca.class)
+                .setParameter("userId", userId)
+                .setFirstResult(start - 1)
+                .setMaxResults(end)
+                .getResultList();
+    }
+
+
+    @Override
+    public Long countVocaByUserId(Long userId) {
+        return em.createQuery("select count (v) from User u join u.userVocas vc join vc.voca v where u.id = :userId ", Long.class)
+                .setParameter("userId", userId)
+                .getSingleResult();
     }
 
 

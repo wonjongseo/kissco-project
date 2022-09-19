@@ -16,9 +16,15 @@ public enum ErrorCode {
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     INVALID_PASSWORD(UNAUTHORIZED, "비밀번호가 옳바르지 않습니다"),
-    INVALID_USER(UNAUTHORIZED, "로그인이 필요합니다"),
+    INVALID_AUTHENTICATION(UNAUTHORIZED, "로그인이 필요합니다"),
+    INVALID_DELETE_VOCA(UNAUTHORIZED, "지울 데이터가 존재하지 않습니다"),
 
-    INVALID_AUTH_TOKEN(UNAUTHORIZED, "권한 정보가 없는 토큰입니다"),
+    INVALID_TEST_END(BAD_REQUEST, "보유하신 단어 이하의 숫자를 입력해주세요"),
+    INVALID_AUTH_TOKEN(BAD_REQUEST, "권한 정보가 없는 토큰입니다"),
+    LESS_TEST_COUNT(BAD_REQUEST, "4개 단어 이상부터 테스트가 가능합니다."),
+//    INVALID_TEST_SOURCE(BAD_REQUEST, "한국어 또는 일본어만 선택 가능합니다"),
+    INVALID_TEST_START(BAD_REQUEST, "1개 이상의 숫자를 입력해주세요"),
+
     UNAUTHORIZED_MEMBER(UNAUTHORIZED, "현재 내 계정 정보가 존재하지 않습니다"),
 
     /* 404 NOT_FOUND : Resource 를 찾을 수 없음 */
@@ -30,6 +36,7 @@ public enum ErrorCode {
     DUPLICATE_USER(CONFLICT, "이메일이 이미 존재합니다"),
 
     ;
+
 
     private final HttpStatus httpStatus;
     private final String detail;

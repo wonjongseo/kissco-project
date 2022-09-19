@@ -21,7 +21,6 @@ public class User {
 
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -35,6 +34,7 @@ public class User {
     @Column(length = 100)
     private String password;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade =  CascadeType.ALL)
     private List<UserVoca> userVocas = new ArrayList<>();
 
@@ -48,10 +48,7 @@ public class User {
         return passwordEncoder.matches(plainPassword, this.password);
     }
 
-    public void addUserVoca(UserVoca userVoca) {
-        this.userVocas.add(userVoca);
-        userVoca.setUser(this);
-    }
+
     public void addUserVoca(Voca voca) {
         UserVoca userVoca = new UserVoca();
         userVoca.setVoca(voca);

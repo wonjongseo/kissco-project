@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 
+// /api/vocas/download
 @RestController
 @RequestMapping("/api/vocas")
 @RequiredArgsConstructor
@@ -27,19 +28,25 @@ public class VocaControllerImpl implements  VocaController{
     private final VocaService vocaService;
     private final UserService userService;
 
+    /**
+     유저의 저장된 파일을 브라우저를 통해 다운로드
+     */
     @GetMapping("/download")
     public void downloadMyVoca(HttpServletRequest request, HttpServletResponse response) {
+// @SessionAttribute("userId") Long userId
+
 //        HttpSession session = request.getSession();
-        User user = userService.findByEmail("visionwill");
 
 //        Long userId = (Long) session.getAttribute("userId");
-        Long userId = user.getId();
-
 //        String email = (String) session.getAttribute("email");
-        String email = user.getEmail();
-        HSSFWorkbook workbook = vocaService.download(userId);
-        String fileName = email+ ".xls";
 
+        User user = userService.findByEmail("visionwill");
+        Long userId = user.getId();
+        String email = user.getEmail();
+
+        HSSFWorkbook workbook = vocaService.download(userId);
+
+        String fileName = email+ ".xls";
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\";");
         response.setHeader("Content-Transfer-Encoding", "binary");
@@ -64,21 +71,15 @@ public class VocaControllerImpl implements  VocaController{
 
     }
 
-    @GetMapping("/asdasd")
-    public List<Voca> getVocas(Long userId, Integer page) {
 
-        return null;
-    }
-
-    @GetMapping("/asdasdasdasd")
-    public List<Voca> getVocasForTest(Long userId, String source, Integer start, Integer end) {
-        return null;
-    }
-
+    /**
+     * 단어 저장
+    파파고 api 를 통한 결과값과 유저가 입력한 단어를
+    유저 단어장에 저장
+    */
     @PostMapping
-    public Voca addVoca(@RequestBody VocaDO vocaDO, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        Long userId = (Long)session.getAttribute("userId");
+    public Voca addVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+
 
         Voca voca = null;
         try {
@@ -90,8 +91,8 @@ public class VocaControllerImpl implements  VocaController{
     }
 
     /**
-     *
-     * 단어 검색하기
+     * 단어 검색
+     파파고 api 를 통해 유저가 입력한 단어의 뜻을 반환
      */
     @GetMapping
     public String addVoca(@RequestBody VocaDO vocaDO) {
@@ -102,5 +103,19 @@ public class VocaControllerImpl implements  VocaController{
             System.out.println("e.getMessage() = " + e.getMessage());
         }
         return voca;
+    }
+
+
+    /**
+     * 단어 삭제
+     유저 단어장에서 해당 단어를 삭제
+     */
+    @Override
+    @DeleteMapping("/{vocaId}")
+    public Long deleteVoca(@PathVariable Long vocaId, @SessionAttribute("userId") Long userId) {
+
+
+        Long aLong = userService.deleteVoca(userId, vocaId);
+        return aLong;
     }
 }

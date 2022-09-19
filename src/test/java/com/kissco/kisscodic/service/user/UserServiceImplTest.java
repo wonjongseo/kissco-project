@@ -68,9 +68,9 @@ public class UserServiceImplTest {
         LoginDto loginDto = new LoginDto();
         loginDto.setEmail("eee");
         loginDto.setPassword("1234");
-        Long login = userService.login(loginDto);
+        User login = userService.login(loginDto);
 
-        assertEquals(aLong,login);
+        assertEquals(aLong,login.getId());
     }
 
 

@@ -22,7 +22,6 @@ public class VocaDO {
             voca.setMean(mean);
         }
 
-        voca.setCreatedAt(LocalDateTime.now());
         return voca;
     }
 }

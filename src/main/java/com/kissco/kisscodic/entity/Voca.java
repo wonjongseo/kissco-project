@@ -21,5 +21,4 @@ public class Voca {
     @Column(length = 50)
     private String mean;
 
-    private LocalDateTime createdAt;
 }

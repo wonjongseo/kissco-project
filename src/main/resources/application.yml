@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
-  jpa: #
+  jpa:
     hibernate:
       ddl-auto: update
     properties:
@@ -28,7 +28,15 @@ jwt:
   secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQK
   token-validity-in-seconds: 86400
 
-  logging:
-    level:
-      me.silvernine: DEBUG
+
+logging:
+  level:
+    me.silvernine: DEBUG
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+
 
