@@ -1,4 +1,4 @@
-package com.kissco.kisscodic;
+package com.kissco.kisscodic.service;
 
 
 import org.json.simple.JSONObject;
