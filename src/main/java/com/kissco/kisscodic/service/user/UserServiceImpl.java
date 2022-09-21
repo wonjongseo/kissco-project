@@ -2,7 +2,6 @@ package com.kissco.kisscodic.service.user;
 
 import com.kissco.kisscodic.dto.user.JoinDto;
 import com.kissco.kisscodic.dto.user.LoginDto;
-import com.kissco.kisscodic.dto.voca.VocaTestDto;
 import com.kissco.kisscodic.entity.User;
 import com.kissco.kisscodic.entity.UserVoca;
 import com.kissco.kisscodic.entity.Voca;
@@ -10,7 +9,6 @@ import com.kissco.kisscodic.exception.CustomException;
 import com.kissco.kisscodic.exception.ErrorCode;
 import com.kissco.kisscodic.repository.user.UserRepository;
 import com.kissco.kisscodic.repository.user_voca.UserVocaRepository;
-import com.kissco.kisscodic.repository.voca.VocaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
 
 @Service
@@ -97,13 +93,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page, Boolean isKnown) {
+        return userRepository.findAllWordsByUserIdWherePage(userId, page, isKnown);
+    }
+
+    @Override
     @Transactional
     public Long deleteVoca(Long userId, Long vocaId) {
 
         Optional<UserVoca> isUserVoca = userVocaRepository.findByUserIdAndVocaId(userId, vocaId);
 
         if (isUserVoca.isEmpty()) {
-            throw new CustomException(ErrorCode.INVALID_DELETE_VOCA);
+            throw new CustomException(ErrorCode.NOT_FOUND_VOCA);
         }
 
         UserVoca userVoca = isUserVoca.get();
@@ -118,6 +119,16 @@ public class UserServiceImpl implements UserService {
         isValidateForm(userId, start, end);
 
         return userRepository.findWordsForTest(userId, start, end);
+    }
+
+    @Override
+    @Transactional
+    public boolean toKnownVoca(Long userId, Long vocaId, Boolean isKnown) {
+        UserVoca userVoca = userVocaRepository.findByUserIdAndVocaId(userId, vocaId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOCA));
+
+        userVoca.setKnown(isKnown);
+
+        return userVoca.isKnown();
     }
 
 

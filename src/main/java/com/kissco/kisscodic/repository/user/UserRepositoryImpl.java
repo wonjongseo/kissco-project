@@ -49,6 +49,16 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page, Boolean isKnown) {
+        return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.id = :userId and vc.isKnown = :isKnown ", Voca.class)
+                .setParameter("userId", userId)
+                .setParameter("isKnown", isKnown)
+                .setFirstResult((page - 1) * MAX_PAGE_COUNT)
+                .setMaxResults((page - 1) * MAX_PAGE_COUNT + MAX_PAGE_COUNT)
+                .getResultList();
+    }
+
+    @Override
     public List<Voca> findAllWordsByUserId(Long userId) {
         return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.id = :userId ", Voca.class)
                 .setParameter("userId", userId)

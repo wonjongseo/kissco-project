@@ -17,7 +17,7 @@ public enum ErrorCode {
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
     INVALID_PASSWORD(UNAUTHORIZED, "비밀번호가 옳바르지 않습니다"),
     INVALID_AUTHENTICATION(UNAUTHORIZED, "로그인이 필요합니다"),
-    INVALID_DELETE_VOCA(UNAUTHORIZED, "지울 데이터가 존재하지 않습니다"),
+    NOT_FOUND_VOCA(UNAUTHORIZED, "데이터가 존재하지 않습니다"),
 
     INVALID_TEST_END(BAD_REQUEST, "보유하신 단어 이하의 숫자를 입력해주세요"),
     INVALID_AUTH_TOKEN(BAD_REQUEST, "권한 정보가 없는 토큰입니다"),

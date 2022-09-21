@@ -3,6 +3,7 @@ package com.kissco.kisscodic.controller.user;
 import com.kissco.kisscodic.entity.Voca;
 import com.kissco.kisscodic.exception.CustomException;
 import com.kissco.kisscodic.exception.ErrorCode;
+import com.kissco.kisscodic.repository.user_voca.UserVocaRepository;
 import com.kissco.kisscodic.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,26 +28,35 @@ public class UserControllerImpl implements UserController {
      */
     @Override
     @GetMapping("/vocas")
-    public ResponseEntity<List<Voca>> getAllVoca(@RequestParam Integer page, @SessionAttribute("userId") Long userId) {
+    public ResponseEntity<List<Voca>> getAllVoca(
+            @RequestParam Integer page,
+            @RequestParam Boolean isKnown,
+            @SessionAttribute("userId") Long userId) {
 
-
-        if (userId == null) {
-            throw new CustomException(ErrorCode.INVALID_AUTH_TOKEN);
-        }
-
-        List<Voca> allWordsByUserIdWherePage = userService.findAllWordsByUserIdWherePage(userId, page);
+        List<Voca> allWordsByUserIdWherePage = userService.findAllWordsByUserIdWherePage(userId, page,isKnown);
 
         return new ResponseEntity<>(allWordsByUserIdWherePage, HttpStatus.OK);
     }
 
+    @Override
+    @PostMapping("/vocas/{vocaId}")
+    public boolean changeKnownVoca(
+                                @PathVariable Long vocaId,
+                                @RequestParam Boolean isKnown,
+                                @SessionAttribute(name = "userId") Long userId) {
+
+        return  userService.toKnownVoca(userId, vocaId, isKnown);
+    }
 
 
     @GetMapping("/vocas/test")
-    public List<Voca> test(
+    public List<Voca> userVocaTest(
                            @RequestParam(name = "start") Integer start,
                            @RequestParam(name = "end") Integer end,
                            @SessionAttribute("userId") Long userId) {
 
         return userService.test(userId,  start, end);
     }
+
+
 }

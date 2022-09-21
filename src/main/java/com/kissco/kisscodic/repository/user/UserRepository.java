@@ -20,6 +20,7 @@ public interface UserRepository  {
     List<Voca> findWord(Long userId, String word);
 
     List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page);
+    List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page, Boolean isKnown);
     List<Voca> findAllWordsByUserId(Long userId);
 
     List<Voca> findWordsForTest(Long userId, Integer start, Integer end);

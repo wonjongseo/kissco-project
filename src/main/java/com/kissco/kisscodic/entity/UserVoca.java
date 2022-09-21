@@ -3,6 +3,7 @@ package com.kissco.kisscodic.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class UserVoca {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(columnDefinition = "tinyint(1) default 0")
+    private boolean isKnown;
 
 
 }
