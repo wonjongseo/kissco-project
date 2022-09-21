@@ -79,7 +79,7 @@ public class VocaControllerImpl implements  VocaController{
     유저 단어장에 저장
     */
     @PostMapping
-    public Voca addVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+    public Voca addVoca(VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
 
 
         Voca voca = null;
@@ -96,7 +96,7 @@ public class VocaControllerImpl implements  VocaController{
      파파고 api 를 통해 유저가 입력한 단어의 뜻을 반환
      */
     @GetMapping
-    public String addVoca(@RequestBody VocaDO vocaDO) {
+    public String addVoca( VocaDO vocaDO) {
         String voca = null;
         try {
             voca = vocaService.findVoca(vocaDO);
