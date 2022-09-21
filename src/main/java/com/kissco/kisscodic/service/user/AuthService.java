@@ -21,7 +21,9 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     @Transactional
-    public Long addUser(JoinDto joinDto)  {
+    public Long addUser(
+            JoinDto joinDto)  {
+        System.out.println("joinDto = " + joinDto);
         List<User> isUser = userRepository.findByEmail(joinDto.getEmail());
 
         if (!isUser.isEmpty()) {
