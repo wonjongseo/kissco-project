@@ -31,20 +31,21 @@ public class VocaControllerImpl implements  VocaController{
     /**
      유저의 저장된 파일을 브라우저를 통해 다운로드
      */
+//    @Override
     @GetMapping("/download")
-    public void downloadMyVoca(HttpServletRequest request, HttpServletResponse response) {
-// @SessionAttribute("userId") Long userId
+    public void downloadMyVoca(
+            HttpServletResponse response
+//            @SessionAttribute(name = "email") String email
 
-//        HttpSession session = request.getSession();
+    ) {
+        /**
+         * TODO REMOVE
+         * email = "admin";
+         */
+        String email = "admin";
 
-//        Long userId = (Long) session.getAttribute("userId");
-//        String email = (String) session.getAttribute("email");
 
-        User user = userService.findByEmail("visionwill");
-        Long userId = user.getId();
-        String email = user.getEmail();
-
-        HSSFWorkbook workbook = vocaService.download(userId);
+        HSSFWorkbook workbook = vocaService.download(email);
 
         String fileName = email+ ".xls";
         response.setContentType("application/vnd.ms-excel");

@@ -72,8 +72,8 @@ public class VocaServiceImpl implements VocaService{
     }
 
     @Override
-    public HSSFWorkbook download(Long userId) {
-        List<Voca> allWordsByUserId = userRepository.findAllWordsByUserId(userId);
+    public HSSFWorkbook download(String email) {
+        List<Voca> allWordsByUserId = userRepository.findAllWordsByUserId(email);
         return fileMaker.createFile(allWordsByUserId);
 
     }

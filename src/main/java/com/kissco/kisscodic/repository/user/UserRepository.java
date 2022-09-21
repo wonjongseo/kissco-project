@@ -5,25 +5,22 @@ import com.kissco.kisscodic.entity.User;
 import com.kissco.kisscodic.entity.Voca;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface UserRepository  {
 
      List<User> findByEmail(String email);
 
-    Long countVocaByUserId(Long userId);
+    Long countVocaByUserId(Long userId ,Boolean isKnown);
     void save(User user);
 
     List<User> findById(Long userId);
 
     List<Voca> findWord(Long userId, String word);
 
-    List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page);
-    List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page, Boolean isKnown);
-    List<Voca> findAllWordsByUserId(Long userId);
+    List<Voca> findVocas(Long userId, Integer page, String sort, Boolean isKnown);
+    List<Voca> findAllWordsByUserId(String  email);
 
-    List<Voca> findWordsForTest(Long userId, Integer start, Integer end);
+    List<Voca> findWordsForTest(Long userId, Boolean isKnown);
 
-//    List<Voca> findWordsByUserIdForTest(Long userId, VocaTestDto vocaTestDto);
 }

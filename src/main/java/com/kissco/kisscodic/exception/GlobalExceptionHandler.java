@@ -9,18 +9,25 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolationException;
 
-import static com.kissco.kisscodic.exception.ErrorCode.DUPLICATE_RESOURCE;
-import static com.kissco.kisscodic.exception.ErrorCode.INVALID_AUTHENTICATION;
+import static com.kissco.kisscodic.exception.ErrorCode.*;
 
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+
+//
     @ExceptionHandler(value = {ConstraintViolationException.class, DataIntegrityViolationException.class
     })
     public ResponseEntity<ErrorResponse> handleDataException(){
         log.error("handleDataException throw Exception : {}", DUPLICATE_RESOURCE);
         return ErrorResponse.toResponseEntity(DUPLICATE_RESOURCE);
+    }
+
+    @ExceptionHandler(value = {IllegalArgumentException.class})
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(){
+        log.error("handleIllegalArgumentException throw Exception : {}", MISMATCH_ARGUMENT);
+        return ErrorResponse.toResponseEntity(MISMATCH_ARGUMENT);
     }
 
     @ExceptionHandler(value = {ServletRequestBindingException.class})

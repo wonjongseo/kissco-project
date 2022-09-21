@@ -1,7 +1,5 @@
 package com.kissco.kisscodic.service.user;
 
-import com.kissco.kisscodic.dto.user.JoinDto;
-import com.kissco.kisscodic.dto.user.LoginDto;
 import com.kissco.kisscodic.entity.User;
 import com.kissco.kisscodic.entity.UserVoca;
 import com.kissco.kisscodic.entity.Voca;
@@ -10,10 +8,10 @@ import com.kissco.kisscodic.exception.ErrorCode;
 import com.kissco.kisscodic.repository.user.UserRepository;
 import com.kissco.kisscodic.repository.user_voca.UserVocaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,48 +20,10 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final UserVocaRepository userVocaRepository;
 
-    @Override
-    @Transactional
-    public Long addUser(JoinDto joinDto)  {
-        List<User> isUser = userRepository.findByEmail(joinDto.getEmail());
 
-        if (!isUser.isEmpty()) {
-            throw new CustomException(ErrorCode.DUPLICATE_RESOURCE);
-        }
-
-        if (!joinDto.getPassword().equals(joinDto.getPassword2())) {
-            throw new CustomException(ErrorCode.INVALID_PASSWORD);
-        }
-
-        User userEntity = joinDto.createUserEntity(joinDto);
-
-        userEntity.hashPassword(passwordEncoder);
-
-        userRepository.save(userEntity);
-
-        return userEntity.getId();
-    }
-
-    @Override
-    public User login(LoginDto loginDto)  {
-
-        List<User> isUser = userRepository.findByEmail(loginDto.getEmail());
-        if (isUser.isEmpty()) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
-
-        User user = isUser.get(0);
-
-        if (!user.checkPassword(loginDto.getPassword(),passwordEncoder)) {
-            throw new CustomException(ErrorCode.INVALID_PASSWORD);
-        }
-
-        return user;
-    }
 
     @Override
     public User findById(Long userId) {
@@ -88,13 +48,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page) {
-        return userRepository.findAllWordsByUserIdWherePage(userId, page);
-    }
+    public List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page, String sort, Boolean isKnown) {
+        isValidateFormForVocaList(userId, isKnown, page);
 
-    @Override
-    public List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page, Boolean isKnown) {
-        return userRepository.findAllWordsByUserIdWherePage(userId, page, isKnown);
+        return userRepository.findVocas(userId, page,sort, isKnown);
     }
 
     @Override
@@ -114,11 +71,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<Voca> test(Long userId,  Integer start, Integer end) {
+    public List<Voca> test(Long userId,  Integer cnt, Boolean isKnown) {
 
-        isValidateForm(userId, start, end);
+        isValidateFormForTest(userId, isKnown, cnt);
 
-        return userRepository.findWordsForTest(userId, start, end);
+        List<Voca> words = userRepository.findWordsForTest(userId, isKnown);
+
+        Collections.shuffle(words);
+
+        return words.subList(0,cnt);
     }
 
     @Override
@@ -132,19 +93,22 @@ public class UserServiceImpl implements UserService {
     }
 
 
-    private boolean isValidateForm(Long userId, Integer start, Integer end) {
-
-
-        if(start <= 0)
-            throw new CustomException(ErrorCode.INVALID_TEST_START);
-
-        if (end < 4)
+    private boolean isValidateFormForTest(Long userId, Boolean isKnown, Integer cnt) {
+        if (cnt < 4)
             throw  new CustomException(ErrorCode.LESS_TEST_COUNT);
 
-        if (end > userRepository.countVocaByUserId(userId))
-            throw new CustomException(ErrorCode.INVALID_TEST_END);
+        if (cnt > userRepository.countVocaByUserId(userId ,isKnown))
+            throw new CustomException(ErrorCode.INVALID_VOCA_CNT);
+        return true;
+    }
 
 
+    private boolean isValidateFormForVocaList(Long userId, Boolean isKnown, Integer page) {
+
+        Long vocaCnt = userRepository.countVocaByUserId(userId, isKnown);
+
+        if (page -1  > vocaCnt / 10)
+            throw new CustomException(ErrorCode.INVALID_VOCA_CNT);
         return true;
     }
 }

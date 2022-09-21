@@ -11,5 +11,5 @@ public interface VocaService {
     Voca createVoca(VocaDO vocaDO,  Long userId) throws ParseException;
     String findVoca(VocaDO vocaDO) throws ParseException;
 
-    HSSFWorkbook download(Long userId);
+    HSSFWorkbook download(String email);
 }

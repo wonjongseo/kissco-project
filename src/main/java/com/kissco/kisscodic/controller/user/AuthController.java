@@ -3,6 +3,7 @@ package com.kissco.kisscodic.controller.user;
 import com.kissco.kisscodic.dto.user.JoinDto;
 import com.kissco.kisscodic.dto.user.LoginDto;
 import com.kissco.kisscodic.entity.User;
+import com.kissco.kisscodic.service.user.AuthService;
 import com.kissco.kisscodic.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
     /**
      * 회원가입
@@ -30,7 +31,7 @@ public class AuthController {
      */
     @PostMapping("/join")
     public ResponseEntity<Long> join(@RequestBody JoinDto joinDto) {
-        return new ResponseEntity<>(userService.addUser(joinDto), HttpStatus.OK);
+        return new ResponseEntity<>(authService.addUser(joinDto), HttpStatus.OK);
     }
 
     /**
@@ -43,7 +44,7 @@ public class AuthController {
 
         HttpSession session = request.getSession();
 
-        User user = userService.login(loginDto);
+        User user = authService.login(loginDto);
         session.setAttribute("userId", user.getId());
         session.setAttribute("email", user.getEmail());
 

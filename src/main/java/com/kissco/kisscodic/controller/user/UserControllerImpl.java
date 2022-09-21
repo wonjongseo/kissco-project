@@ -31,9 +31,10 @@ public class UserControllerImpl implements UserController {
     public ResponseEntity<List<Voca>> getAllVoca(
             @RequestParam Integer page,
             @RequestParam Boolean isKnown,
+            @RequestParam String sort,
             @SessionAttribute("userId") Long userId) {
 
-        List<Voca> allWordsByUserIdWherePage = userService.findAllWordsByUserIdWherePage(userId, page,isKnown);
+        List<Voca> allWordsByUserIdWherePage = userService.findAllWordsByUserIdWherePage(userId, page,sort, isKnown);
 
         return new ResponseEntity<>(allWordsByUserIdWherePage, HttpStatus.OK);
     }
@@ -51,11 +52,11 @@ public class UserControllerImpl implements UserController {
 
     @GetMapping("/vocas/test")
     public List<Voca> userVocaTest(
-                           @RequestParam(name = "start") Integer start,
-                           @RequestParam(name = "end") Integer end,
+                           @RequestParam(name = "cnt") Integer cnt,
+                           @RequestParam(name = "isKnown") Boolean isKnown,
                            @SessionAttribute("userId") Long userId) {
 
-        return userService.test(userId,  start, end);
+        return userService.test(userId,  cnt, isKnown);
     }
 
 
