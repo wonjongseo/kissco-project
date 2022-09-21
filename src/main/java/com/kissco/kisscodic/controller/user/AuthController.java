@@ -30,7 +30,7 @@ public class AuthController {
 
      */
     @PostMapping("/join")
-    public ResponseEntity<Long> join(@RequestBody JoinDto joinDto) {
+    public ResponseEntity<Long> join( JoinDto joinDto) {
         return new ResponseEntity<>(authService.addUser(joinDto), HttpStatus.OK);
     }
 
@@ -40,7 +40,7 @@ public class AuthController {
      비밀번호가 일치하지 않은 경우 예외.
      */
     @PostMapping("/login")
-    public User login(@RequestBody LoginDto loginDto, HttpServletRequest request) {
+    public User login( LoginDto loginDto, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
 
