@@ -13,7 +13,9 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -89,10 +91,13 @@ public class VocaServiceImpl implements VocaService{
     }
 
     @Override
-    public String findVoca(VocaDO vocaDO) {
-        String mean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
+    public Map<String,String> findVoca(String word ,String source) {
+        String mean = apiService.getMean(word, source);
 
-        return mean;
+        Map<String, String> returnJson = new HashMap<>();
+        returnJson.put("mean", mean);
+
+        return returnJson;
     }
 
     @Override

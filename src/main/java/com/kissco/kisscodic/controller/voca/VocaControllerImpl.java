@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @RestController
@@ -43,10 +45,10 @@ public class VocaControllerImpl implements  VocaController{
      */
     @Override
     @GetMapping
-    public String searchVoca(@RequestBody VocaDO vocaDO) {
-        String voca = vocaService.findVoca(vocaDO);
+    public Map<String,String> searchVoca(@RequestParam String word , @RequestParam String source) {
 
-        return voca;
+         return vocaService.findVoca(word,source);
+
     }
 
 
