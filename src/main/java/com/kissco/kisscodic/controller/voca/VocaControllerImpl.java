@@ -27,31 +27,25 @@ public class VocaControllerImpl implements  VocaController{
      * (설명)
      *  1. 파파고 api 를 통한 결과값를 저장 기능을 통해 데이터베이스에 저장.
     */
+    @Override
     @PostMapping
-    public Voca addVoca(VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+    public Voca addVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+        Voca voca = vocaService.createVoca(vocaDO, userId);
 
-        Voca voca = null;
-        try {
-            voca = vocaService.createVoca(vocaDO, userId);
-        } catch (ParseException e) {
-            System.out.println("e.getMessage() = " + e.getMessage());
-        }
         return voca;
     }
+
 
     /**
      * (개요) 단어 검색
      1. 파파고 api 를 통한 결과값를 저장 기능을 통해 데이터베이스에 저장.
      2. 검색 단어가 일본어 혹은 한국어 인 것을 선택
      */
+    @Override
     @GetMapping
-    public String addVoca( VocaDO vocaDO) {
-        String voca = null;
-        try {
-            voca = vocaService.findVoca(vocaDO);
-        } catch (ParseException e) {
-            System.out.println("e.getMessage() = " + e.getMessage());
-        }
+    public String searchVoca(@RequestBody VocaDO vocaDO) {
+        String voca = vocaService.findVoca(vocaDO);
+
         return voca;
     }
 
@@ -63,8 +57,6 @@ public class VocaControllerImpl implements  VocaController{
     @Override
     @DeleteMapping("/{vocaId}")
     public Long deleteVoca(@PathVariable Long vocaId, @SessionAttribute("userId") Long userId) {
-
-
         Long aLong = userService.deleteVoca(userId, vocaId);
         return aLong;
     }
@@ -110,5 +102,12 @@ public class VocaControllerImpl implements  VocaController{
             }
         }
 
+    }
+
+    @PostMapping("/my")
+    public Voca addMyVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+        Voca voca = vocaService.createMyVoca(vocaDO, userId);
+
+        return voca;
     }
 }

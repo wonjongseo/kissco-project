@@ -25,7 +25,7 @@ public class ApiService {
     @Value("${papago.apiURL}")
     private String apiURL;
 
-    public String getMean(String word , String source) throws ParseException {
+    public String getMean(String word , String source)  {
 
         try{
             word = URLEncoder.encode(word, "UTF-8");
@@ -41,7 +41,12 @@ public class ApiService {
         System.out.println("responseBody = " + responseBody);
 
         JSONParser jsonParser = new JSONParser();
-        Object obj = jsonParser.parse(responseBody);
+        Object obj = null;
+        try {
+            obj = jsonParser.parse(responseBody);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         JSONObject jsonObject = (JSONObject) obj;
 
         JSONObject message = (JSONObject)jsonObject.get("message");

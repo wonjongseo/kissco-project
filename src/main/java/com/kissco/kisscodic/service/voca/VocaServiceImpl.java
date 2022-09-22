@@ -29,7 +29,7 @@ public class VocaServiceImpl implements VocaService{
 
     @Override
     @Transactional
-    public Voca createVoca(VocaDO vocaDO, Long userId) throws ParseException {
+    public Voca createVoca(VocaDO vocaDO, Long userId)  {
 
         Optional<Voca> isExist;
 
@@ -46,6 +46,7 @@ public class VocaServiceImpl implements VocaService{
         if (isExist.isEmpty()) {
 
             String foundMean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
+
             voca = VocaDO.createVoca(vocaDO, foundMean);
 
             user.addUserVoca(voca);
@@ -60,12 +61,35 @@ public class VocaServiceImpl implements VocaService{
             }
         }
 
-
         return voca;
     }
 
     @Override
-    public String findVoca(VocaDO vocaDO) throws ParseException {
+    @Transactional
+    public Voca createMyVoca(VocaDO vocaDO, Long userId) {
+        Optional<Voca> isExist = vocaRepository.findByWord(vocaDO.getWord());
+
+        User user = userRepository.findById(userId).get(0);
+
+        Voca voca ;
+        if (isExist.isEmpty()) {
+            voca = VocaDO.createMyVoca(vocaDO);
+            user.addUserVoca(voca);
+            vocaRepository.save(voca);
+        }
+        else {
+            voca =  isExist.get();
+            List<Voca> vocas =userRepository.findWord(userId, voca.getWord());
+            if(vocas.isEmpty()){
+                user.addUserVoca(voca);
+                vocaRepository.save(voca);
+            }
+        }
+        return voca;
+    }
+
+    @Override
+    public String findVoca(VocaDO vocaDO) {
         String mean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
 
         return mean;
@@ -75,7 +99,6 @@ public class VocaServiceImpl implements VocaService{
     public HSSFWorkbook download(String email) {
         List<Voca> allWordsByUserId = userRepository.findAllWordsByUserId(email);
         return fileMaker.createFile(allWordsByUserId);
-
     }
 
 
