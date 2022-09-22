@@ -85,7 +85,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public boolean toKnownVoca(Long userId, Long vocaId, Boolean isKnown) {
-        UserVoca userVoca = userVocaRepository.findByUserIdAndVocaId(userId, vocaId).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOCA));
+        UserVoca userVoca = userVocaRepository.findByUserIdAndVocaId(userId, vocaId)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_VOCA));
 
         userVoca.setKnown(isKnown);
 

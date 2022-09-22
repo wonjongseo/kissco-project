@@ -48,6 +48,7 @@ public class UserRepositoryImpl implements UserRepository {
 
         if (sort.equals("asc")) {
             jpql = "select v from User u join u.userVocas vc join vc.voca v where u.id = :userId and vc.isKnown = :isKnown order by vc.id asc";
+
         } else if (sort.equals("desc")) {
             jpql = "select v from User u join u.userVocas vc join vc.voca v where u.id = :userId and vc.isKnown = :isKnown order by vc.id desc";
         } else throw new CustomException(ErrorCode.MISMATCH_ARGUMENT);
