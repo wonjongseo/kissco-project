@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,7 +29,7 @@ public class AuthController {
              이메일 길이 100
      */
     @PostMapping("/join")
-    public ResponseEntity<Long> join( JoinDto joinDto) {
+    public ResponseEntity<Long> join(@RequestBody JoinDto joinDto) {
         return new ResponseEntity<>(authService.addUser(joinDto), HttpStatus.OK);
     }
 
@@ -38,7 +39,7 @@ public class AuthController {
        (예외) 비밀번호가 일치하지 않은 경우 예외.
      */
     @PostMapping("/login")
-    public User login( LoginDto loginDto, HttpServletRequest request) {
+    public User login( @RequestBody LoginDto loginDto, HttpServletRequest request) {
 
         HttpSession session = request.getSession();
 

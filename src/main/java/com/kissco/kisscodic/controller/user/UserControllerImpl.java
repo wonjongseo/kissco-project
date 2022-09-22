@@ -76,6 +76,8 @@ public class UserControllerImpl implements UserController {
                            @RequestParam(name = "isKnown") Boolean isKnown,
                            @SessionAttribute("userId") Long userId) {
 
+
         return userService.test(userId,  cnt, isKnown);
+
     }
 }
