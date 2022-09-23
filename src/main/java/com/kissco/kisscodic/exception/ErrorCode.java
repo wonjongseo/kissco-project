@@ -21,6 +21,7 @@ public enum ErrorCode {
     INVALID_AUTHENTICATION(UNAUTHORIZED, "로그인이 필요합니다"),
     NOT_FOUND_VOCA(UNAUTHORIZED, "데이터가 존재하지 않습니다"),
 
+
     INVALID_VOCA_CNT(BAD_REQUEST, "보유하신 단어 이하의 숫자를 입력해주세요"),
     INVALID_AUTH_TOKEN(BAD_REQUEST, "권한 정보가 없는 토큰입니다"),
     LESS_TEST_COUNT(BAD_REQUEST, "4개 단어 이상부터 테스트가 가능합니다."),
@@ -34,6 +35,7 @@ public enum ErrorCode {
     REFRESH_TOKEN_NOT_FOUND(NOT_FOUND, "로그아웃 된 사용자입니다"),
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
+    DUPLICATE_MY_VOCA(CONFLICT, "나의 보카가 이미 존재합니다"),
     DUPLICATE_RESOURCE(CONFLICT, "데이터가 이미 존재합니다"),
     DUPLICATE_USER(CONFLICT, "이메일이 이미 존재합니다"),
 

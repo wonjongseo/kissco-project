@@ -9,6 +9,8 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 @Entity
 @Getter @Setter
 public class UserVoca {
@@ -27,6 +29,9 @@ public class UserVoca {
 
     @Column(columnDefinition = "tinyint(1) default 0")
     private boolean isKnown;
+
+    @Column(columnDefinition = "tinyint(1) default 0")
+    private boolean isMine;
 
 
 }

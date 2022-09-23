@@ -7,6 +7,7 @@ import com.kissco.kisscodic.exception.CustomException;
 import com.kissco.kisscodic.exception.ErrorCode;
 import com.kissco.kisscodic.repository.user.UserRepository;
 import com.kissco.kisscodic.repository.user_voca.UserVocaRepository;
+import com.kissco.kisscodic.repository.voca.VocaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +23,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserVocaRepository userVocaRepository;
-
-
+    private final VocaRepository vocaRepository;
 
     @Override
     public User findById(Long userId) {
@@ -69,6 +69,24 @@ public class UserServiceImpl implements UserService {
 
         return userVoca.getId();
     }
+    @Override
+    @Transactional
+    public int deleteAllVoca(Long userId) {
+        List<UserVoca> userVocas =  userVocaRepository.findByUserId(userId);
+
+        int size = userVocas.size();
+
+        for (UserVoca uv: userVocas){
+            userVocaRepository.deleteById(uv.getId());
+            if(uv.isMine()) {
+                Voca voca = uv.getVoca();
+                vocaRepository.deleteById(voca.getId());
+            }
+        }
+
+
+        return size;
+    }
 
     @Override
     public List<Voca> test(Long userId,  Integer cnt, Boolean isKnown) {
@@ -92,6 +110,7 @@ public class UserServiceImpl implements UserService {
 
         return userVoca.isKnown();
     }
+
 
 
     private boolean isValidateFormForTest(Long userId, Boolean isKnown, Integer cnt) {

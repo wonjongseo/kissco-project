@@ -6,13 +6,11 @@ import com.kissco.kisscodic.service.user.UserService;
 import com.kissco.kisscodic.service.voca.VocaService;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.json.simple.parser.ParseException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -23,6 +21,19 @@ public class VocaControllerImpl implements  VocaController{
 
     private final VocaService vocaService;
     private final UserService userService;
+
+    /**
+     * (개요) 단어 검색
+     1. 파파고 api 를 통한 결과값를 저장 기능을 통해 데이터베이스에 저장.
+     2. 검색 단어가 일본어 혹은 한국어 인 것을 선택
+     */
+    @Override
+    @GetMapping
+    public Map<String,String> searchVoca(@RequestParam String word , @RequestParam String source) {
+
+        return vocaService.findVoca(word,source);
+
+    }
 
     /**
      * (개요) 단어 저장
@@ -39,20 +50,6 @@ public class VocaControllerImpl implements  VocaController{
 
 
     /**
-     * (개요) 단어 검색
-     1. 파파고 api 를 통한 결과값를 저장 기능을 통해 데이터베이스에 저장.
-     2. 검색 단어가 일본어 혹은 한국어 인 것을 선택
-     */
-    @Override
-    @GetMapping
-    public Map<String,String> searchVoca(@RequestParam String word , @RequestParam String source) {
-
-         return vocaService.findVoca(word,source);
-
-    }
-
-
-    /**
      * (개요) 단어 삭제
      * (설명) 유저 단어장에서 해당 단어를 삭제
      */
@@ -61,6 +58,21 @@ public class VocaControllerImpl implements  VocaController{
     public Long deleteVoca(@PathVariable Long vocaId, @SessionAttribute("userId") Long userId) {
         Long aLong = userService.deleteVoca(userId, vocaId);
         return aLong;
+    }
+
+
+    @Override
+    @DeleteMapping("/my/all")
+    public int deleteAllVoca( @SessionAttribute("userId") Long userId) {
+        return userService.deleteAllVoca(userId);
+
+    }
+
+    @PostMapping("/my")
+    public Voca addMyVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+        Voca voca = vocaService.createMyVoca(vocaDO, userId);
+
+        return voca;
     }
 
     /**
@@ -106,10 +118,5 @@ public class VocaControllerImpl implements  VocaController{
 
     }
 
-    @PostMapping("/my")
-    public Voca addMyVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
-        Voca voca = vocaService.createMyVoca(vocaDO, userId);
 
-        return voca;
-    }
 }

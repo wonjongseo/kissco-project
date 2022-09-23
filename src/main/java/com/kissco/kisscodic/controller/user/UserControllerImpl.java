@@ -54,7 +54,9 @@ public class UserControllerImpl implements UserController {
                                 @RequestParam Boolean isKnown,
                                 @SessionAttribute(name = "userId") Long userId) {
 
-        return  userService.toKnownVoca(userId, vocaId, isKnown);
+        userService.toKnownVoca(userId, vocaId, isKnown);
+
+        return true;
     }
 
 

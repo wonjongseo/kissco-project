@@ -13,4 +13,6 @@ public interface VocaRepository extends JpaRepository<Voca, Long> {
     Optional<Voca> findByMean(String word);
 
     List<Voca> findAll();
+
+    Optional<Voca> findByWordAndMean(String word, String mean);
 }

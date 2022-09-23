@@ -17,4 +17,6 @@ public interface VocaController {
     Voca addVoca( VocaDO vocaDO, Long userId);
 
     Map<String,String> searchVoca(@PathVariable String word , @PathVariable String source);
+
+    int deleteAllVoca( @SessionAttribute("userId") Long userId);
 }

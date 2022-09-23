@@ -56,4 +56,13 @@ public class User {
         this.userVocas.add(userVoca);
         userVoca.setUser(this);
     }
+
+    public void addMyUserVoca(Voca voca) {
+        UserVoca userVoca = new UserVoca();
+        userVoca.setVoca(voca);
+        userVoca.setMine(true);
+
+        this.userVocas.add(userVoca);
+        userVoca.setUser(this);
+    }
 }
