@@ -26,28 +26,6 @@ public class UserServiceImpl implements UserService {
     private final VocaRepository vocaRepository;
 
     @Override
-    public User findById(Long userId) {
-        List<User> users=  userRepository.findById(userId);
-
-        if (users.isEmpty()) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
-
-        return users.get(0);
-    }
-
-    @Override
-    public User findByEmail(String email) {
-        List<User> users=  userRepository.findByEmail(email);
-
-        if (users.isEmpty()) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
-
-        return users.get(0);
-    }
-
-    @Override
     public List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page, String sort, Boolean isKnown) {
         isValidateFormForVocaList(userId, isKnown, page);
 
@@ -72,7 +50,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public int deleteAllVoca(Long userId) {
-        List<UserVoca> userVocas =  userVocaRepository.findByUserId(userId);
+        List<UserVoca> userVocas =  userVocaRepository.findVocasByUserId(userId);
 
         int size = userVocas.size();
 
@@ -83,7 +61,6 @@ public class UserServiceImpl implements UserService {
                 vocaRepository.deleteById(voca.getId());
             }
         }
-
 
         return size;
     }
@@ -130,5 +107,27 @@ public class UserServiceImpl implements UserService {
         if (page -1  > vocaCnt / 10)
             throw new CustomException(ErrorCode.INVALID_VOCA_CNT);
         return true;
+    }
+
+    @Override
+    public User findById(Long userId) {
+        List<User> users=  userRepository.findById(userId);
+
+        if (users.isEmpty()) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return users.get(0);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        List<User> users=  userRepository.findByEmail(email);
+
+        if (users.isEmpty()) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        return users.get(0);
     }
 }

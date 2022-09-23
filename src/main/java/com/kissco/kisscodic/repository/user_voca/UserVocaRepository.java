@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UserVocaRepository extends JpaRepository<UserVoca, Long> {
     Optional<UserVoca> findByUserIdAndVocaId(Long userId, Long vocaId);
 
-    List<UserVoca> findByUserId(Long userId);
+    List<UserVoca> findVocasByUserId(Long userId);
 
 
     @Query("select uv From UserVoca uv join uv.user u join uv.voca v where  uv.isMine= true  and u.id = :id and v.mean = :mean and v.word = :word")

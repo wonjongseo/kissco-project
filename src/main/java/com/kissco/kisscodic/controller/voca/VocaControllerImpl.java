@@ -44,10 +44,21 @@ public class VocaControllerImpl implements  VocaController{
     @PostMapping
     public Voca addVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
         Voca voca = vocaService.createVoca(vocaDO, userId);
-
         return voca;
     }
 
+    /**
+     * (개요) 나만의 단어 저장
+     * (설명)
+     * 1. 유저가 단어와 뜻을 직접 입력하여 회원 별로 DB에 저장.
+     * 2. 나만의 단어를 단어장에서 삭제할 시 단어장 뿐 아니라 단어의 데이터까지 삭제.
+          */
+    @PostMapping("/my")
+    public Voca addMyVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+        Voca voca = vocaService.createMyVoca(vocaDO, userId);
+
+        return voca;
+    }
 
     /**
      * (개요) 단어 삭제
@@ -61,19 +72,19 @@ public class VocaControllerImpl implements  VocaController{
     }
 
 
+    /**
+     * (개요) 모든 단어 삭제
+     * (설명)
+     * 1. 회원 단어장 페이지에서 “모든 단어 삭제” 버튼을 눌러,
+     * 2. 저장한 모든 단어를 삭제한다.
+     */
     @Override
-    @DeleteMapping("/my/all")
+    @DeleteMapping("/all-vocas")
     public int deleteAllVoca( @SessionAttribute("userId") Long userId) {
         return userService.deleteAllVoca(userId);
 
     }
 
-    @PostMapping("/my")
-    public Voca addMyVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
-        Voca voca = vocaService.createMyVoca(vocaDO, userId);
-
-        return voca;
-    }
 
     /**
      (개요) 단어 다운로드
