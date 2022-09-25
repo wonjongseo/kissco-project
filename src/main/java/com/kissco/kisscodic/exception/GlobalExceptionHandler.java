@@ -23,12 +23,12 @@ public class GlobalExceptionHandler {
         log.error("handleDataException throw Exception : {}", DUPLICATE_RESOURCE);
         return ErrorResponse.toResponseEntity(DUPLICATE_RESOURCE);
     }
-
-    @ExceptionHandler(value = {IllegalArgumentException.class})
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(){
-        log.error("handleIllegalArgumentException throw Exception : {}", MISMATCH_ARGUMENT);
-        return ErrorResponse.toResponseEntity(MISMATCH_ARGUMENT);
-    }
+//
+//    @ExceptionHandler(value = {IllegalArgumentException.class})
+//    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(){
+//        log.error("handleIllegalArgumentException throw Exception : {}", MISMATCH_ARGUMENT);
+//        return ErrorResponse.toResponseEntity(MISMATCH_ARGUMENT);
+//    }
 
     @ExceptionHandler(value = {ServletRequestBindingException.class})
     public ResponseEntity<ErrorResponse> handleAuthenticate(){

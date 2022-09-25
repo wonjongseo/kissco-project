@@ -5,6 +5,8 @@ import com.kissco.kisscodic.dto.user.LoginDto;
 import com.kissco.kisscodic.entity.User;
 import com.kissco.kisscodic.service.user.AuthService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/api")
@@ -39,15 +44,15 @@ public class AuthController {
        (예외) 비밀번호가 일치하지 않은 경우 예외.
      */
     @PostMapping("/login")
-    public User login( @RequestBody LoginDto loginDto, HttpServletRequest request) {
-
-        HttpSession session = request.getSession();
-
+    public ResponseEntity<User> login( @RequestBody LoginDto loginDto, HttpSession session) {
         User user = authService.login(loginDto);
-        session.setAttribute("userId", user.getId());
-        session.setAttribute("email", user.getEmail());
 
-        return user;
+//        HttpSession session = request.getSession();
+        session.setAttribute("userId",user.getId());
+        session.setAttribute("email",user.getEmail());
+
+
+        return ResponseEntity.ok().body(user);
 
     }
 

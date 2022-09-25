@@ -8,9 +8,13 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Arrays;
 import java.util.Map;
 
 
@@ -39,10 +43,14 @@ public class VocaControllerImpl implements  VocaController{
      * (개요) 단어 저장
      * (설명)
      *  1. 파파고 api 를 통한 결과값를 저장 기능을 통해 데이터베이스에 저장.
-    */
-    @Override
+     */
+//    @Override
     @PostMapping
-    public Voca addVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+    public Voca addVoca(@RequestBody VocaDO vocaDO, HttpSession session) {
+
+        Long userId = (Long) session.getAttribute("userId");
+
+        System.out.println("userId = " + userId);
         Voca voca = vocaService.createVoca(vocaDO, userId);
         return voca;
     }

@@ -14,7 +14,7 @@ import java.util.Map;
 public interface VocaController {
     Long deleteVoca(@PathVariable Long vocaId, Long userId);
 
-    Voca addVoca( VocaDO vocaDO, Long userId);
+//    Voca addVoca( VocaDO vocaDO, String userId);
 
     Map<String,String> searchVoca(@PathVariable String word , @PathVariable String source);
 
