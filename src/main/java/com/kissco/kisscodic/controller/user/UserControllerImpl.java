@@ -7,7 +7,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -48,8 +50,13 @@ public class UserControllerImpl implements UserController {
      * (개요) 단어 개수 확인
      */
     @GetMapping("/vocas/cnt/{userId}")
-    public Long getVocaCnt(@PathVariable Long userId, @RequestParam Boolean isKnown) {
-        return userService.getVocaCntByIsKnown(userId, isKnown);
+    public Map<String, Long> getVocaCnt(@PathVariable Long userId, @RequestParam Boolean isKnown) {
+        Map<String, Long> cnt = new HashMap<>();
+        cnt.put("count", userService.getVocaCntByIsKnown(userId, isKnown));
+
+
+        return cnt;
+
     }
     /**
      * (개요) 미암기 표시의 단어를 암기로 변경.
