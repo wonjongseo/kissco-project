@@ -30,12 +30,13 @@ public class UserControllerImpl implements UserController {
      *  2. 최신순, 오래된 순 외의 정렬 방법 선택 시
      */
     @Override
-    @GetMapping("/vocas")
+    @GetMapping("/vocas/{userId}")
     public ResponseEntity<List<Voca>> getAllVoca(
+            @PathVariable Long userId,
             @RequestParam Integer page,
             @RequestParam Boolean isKnown,
-            @RequestParam String sort,
-            @SessionAttribute("userId") Long userId) {
+            @RequestParam String sort
+            ) {
 
         List<Voca> allWordsByUserIdWherePage = userService.findAllWordsByUserIdWherePage(userId, page,sort, isKnown);
 
@@ -48,11 +49,11 @@ public class UserControllerImpl implements UserController {
      */
 
     @Override
-    @PostMapping("/vocas/{vocaId}")
+    @PostMapping("/vocas/{vocaId}/{userId}")
     public boolean changeKnownVoca(
                                 @PathVariable Long vocaId,
                                 @RequestParam Boolean isKnown,
-                                @SessionAttribute(name = "userId") Long userId) {
+                                @PathVariable Long userId) {
 
         userService.toKnownVoca(userId, vocaId, isKnown);
 
@@ -72,11 +73,11 @@ public class UserControllerImpl implements UserController {
      * 	2. 카테고리를 암기 혹은 비암기 외의 값으로 입력한 경우
      * 	3. 개수를 카테고리 별 저장된 데이터보다 높은 수를 입력한 경우.
      */
-    @GetMapping("/vocas/test")
-    public List<Voca> userVocaTest(
+    @GetMapping("/vocas/test/{userId}")
+    public List<Voca> userVocaTest(@PathVariable("userId") Long userId,
                            @RequestParam(name = "cnt") Integer cnt,
-                           @RequestParam(name = "isKnown") Boolean isKnown,
-                           @SessionAttribute("userId") Long userId) {
+                           @RequestParam(name = "isKnown") Boolean isKnown
+                           ) {
 
 
         return userService.test(userId,  cnt, isKnown);

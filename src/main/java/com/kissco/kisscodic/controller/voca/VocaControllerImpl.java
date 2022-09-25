@@ -34,7 +34,6 @@ public class VocaControllerImpl implements  VocaController{
     @Override
     @GetMapping
     public Map<String,String> searchVoca(@RequestParam String word , @RequestParam String source) {
-
         return vocaService.findVoca(word,source);
 
     }
@@ -45,10 +44,8 @@ public class VocaControllerImpl implements  VocaController{
      *  1. 파파고 api 를 통한 결과값를 저장 기능을 통해 데이터베이스에 저장.
      */
 //    @Override
-    @PostMapping
-    public Voca addVoca(@RequestBody VocaDO vocaDO, HttpSession session) {
-
-        Long userId = (Long) session.getAttribute("userId");
+    @PostMapping("/{userId}")
+    public Voca addVoca(@RequestBody VocaDO vocaDO, @PathVariable Long userId) {
 
         System.out.println("userId = " + userId);
         Voca voca = vocaService.createVoca(vocaDO, userId);
@@ -61,8 +58,8 @@ public class VocaControllerImpl implements  VocaController{
      * 1. 유저가 단어와 뜻을 직접 입력하여 회원 별로 DB에 저장.
      * 2. 나만의 단어를 단어장에서 삭제할 시 단어장 뿐 아니라 단어의 데이터까지 삭제.
           */
-    @PostMapping("/my")
-    public Voca addMyVoca(@RequestBody VocaDO vocaDO, @SessionAttribute("userId") Long userId) {
+    @PostMapping("/my/{userId}")
+    public Voca addMyVoca(@RequestBody VocaDO vocaDO,@PathVariable Long userId) {
         Voca voca = vocaService.createMyVoca(vocaDO, userId);
 
         return voca;
@@ -73,8 +70,8 @@ public class VocaControllerImpl implements  VocaController{
      * (설명) 유저 단어장에서 해당 단어를 삭제
      */
     @Override
-    @DeleteMapping("/{vocaId}")
-    public Long deleteVoca(@PathVariable Long vocaId, @SessionAttribute("userId") Long userId) {
+    @DeleteMapping("/{vocaId}/{userId}")
+    public Long deleteVoca(@PathVariable(name = "vocaId") Long vocaId, @PathVariable(name = "userId")  Long userId) {
         Long aLong = userService.deleteVoca(userId, vocaId);
         return aLong;
     }
@@ -87,8 +84,8 @@ public class VocaControllerImpl implements  VocaController{
      * 2. 저장한 모든 단어를 삭제한다.
      */
     @Override
-    @DeleteMapping("/all-vocas")
-    public int deleteAllVoca( @SessionAttribute("userId") Long userId) {
+    @DeleteMapping("/all-vocas/{userId}")
+    public int deleteAllVoca( @PathVariable Long userId) {
         return userService.deleteAllVoca(userId);
 
     }
@@ -99,10 +96,10 @@ public class VocaControllerImpl implements  VocaController{
      (설명) 유저가 저장한 파일을 브라우저를 통해 다운로드한다.
      */
 //    @Override
-    @GetMapping("/download")
+    @GetMapping("/download/{userId}")
     public void downloadMyVoca(
-            HttpServletResponse response
-//            @SessionAttribute(name = "email") String email
+            HttpServletResponse response,
+            @PathVariable Long userId
     ) {
         /**
          * TODO REMOVE
