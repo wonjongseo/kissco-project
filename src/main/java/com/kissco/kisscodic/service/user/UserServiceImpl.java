@@ -117,7 +117,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long userId) {
-        List<User> users=  userRepository.findById(userId);
+        List<User> users=  userRepository.findUserById(userId);
 
         if (users.isEmpty()) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);

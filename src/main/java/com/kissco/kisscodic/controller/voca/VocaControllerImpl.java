@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 
@@ -95,15 +96,11 @@ public class VocaControllerImpl implements  VocaController{
             HttpServletResponse response,
             @PathVariable Long userId
     ) {
-        /**
-         * TODO REMOVE
-         * email = "admin";
-         */
-        String email = "admin";
 
-        HSSFWorkbook workbook = vocaService.download(email);
 
-        String fileName = email+ ".xls";
+        HSSFWorkbook workbook = vocaService.download(userId);
+        LocalDateTime now = LocalDateTime.now();
+        String fileName = now.toString().substring(0,10)+ ".xls";
         response.setContentType("application/vnd.ms-excel");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\";");
         response.setHeader("Content-Transfer-Encoding", "binary");

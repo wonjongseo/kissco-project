@@ -14,12 +14,12 @@ public interface UserRepository  {
     Long countVocaByUserId(Long userId ,Boolean isKnown);
     void save(User user);
 
-    List<User> findById(Long userId);
+    List<User> findUserById(Long userId);
 
     List<Voca> findWord(Long userId, String word);
 
     List<Voca> findVocas(Long userId, Integer page, String sort, Boolean isKnown);
-    List<Voca> findAllWordsByUserId(String  email);
+    List<Voca> findAllWordsByUserId(Long  userId);
 
     List<Voca> findWordsForTest(Long userId, Boolean isKnown);
 

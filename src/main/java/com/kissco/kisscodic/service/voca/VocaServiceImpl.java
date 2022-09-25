@@ -47,7 +47,7 @@ public class VocaServiceImpl implements VocaService{
         }
 
         Voca voca = null;
-        User user = userRepository.findById(userId).get(0);
+        User user = userRepository.findUserById(userId).get(0);
 
         if (isExist.isEmpty()) {
 
@@ -110,7 +110,7 @@ public class VocaServiceImpl implements VocaService{
         }
 
 
-        User user = userRepository.findById(userId).get(0);
+        User user = userRepository.findUserById(userId).get(0);
         Voca newVoca = VocaDO.createMyVoca(vocaDO);
 
         user.addMyUserVoca(newVoca);
@@ -129,8 +129,8 @@ public class VocaServiceImpl implements VocaService{
     }
 
     @Override
-    public HSSFWorkbook download(String email) {
-        List<Voca> allWordsByUserId = userRepository.findAllWordsByUserId(email);
+    public HSSFWorkbook download(Long userId) {
+        List<Voca> allWordsByUserId = userRepository.findAllWordsByUserId(userId);
         return fileMaker.createFile(allWordsByUserId);
     }
 }

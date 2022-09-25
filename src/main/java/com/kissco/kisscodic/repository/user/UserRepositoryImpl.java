@@ -29,7 +29,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> findById(Long userId) {
+    public List<User> findUserById(Long userId) {
         return em.createQuery("select  u from User u where u.id = :id", User.class).setParameter("id", userId).getResultList();
 
     }
@@ -62,9 +62,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Voca> findAllWordsByUserId(String email) {
-        return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.email = :email ", Voca.class)
-                .setParameter("email", email)
+    public List<Voca> findAllWordsByUserId(Long userId) {
+        return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.id = :userId ", Voca.class)
+                .setParameter("userId", userId)
                 .getResultList();
     }
 
