@@ -43,6 +43,14 @@ public class UserControllerImpl implements UserController {
         return new ResponseEntity<>(allWordsByUserIdWherePage, HttpStatus.OK);
     }
 
+
+    /**
+     * (개요) 단어 개수 확인
+     */
+    @GetMapping("/vocas/cnt/{userId}")
+    public Long getVocaCnt(@PathVariable Long userId, @RequestParam Boolean isKnown) {
+        return userService.getVocaCntByIsKnown(userId, isKnown);
+    }
     /**
      * (개요) 미암기 표시의 단어를 암기로 변경.
        (예외) 저장되지 않은 vocaId 를 입력할 시

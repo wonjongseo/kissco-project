@@ -47,6 +47,7 @@ public class UserServiceImpl implements UserService {
 
         return userVoca.getId();
     }
+
     @Override
     @Transactional
     public int deleteAllVoca(Long userId) {
@@ -107,6 +108,11 @@ public class UserServiceImpl implements UserService {
         if (page -1  > vocaCnt / 10)
             throw new CustomException(ErrorCode.INVALID_VOCA_CNT);
         return true;
+    }
+
+    @Override
+    public Long getVocaCntByIsKnown(Long userId, Boolean isKnown) {
+        return userRepository.countVocaByUserId(userId, isKnown);
     }
 
     @Override

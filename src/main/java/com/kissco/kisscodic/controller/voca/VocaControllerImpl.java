@@ -8,13 +8,9 @@ import lombok.RequiredArgsConstructor;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.Map;
 
 
@@ -46,8 +42,6 @@ public class VocaControllerImpl implements  VocaController{
 //    @Override
     @PostMapping("/{userId}")
     public Voca addVoca(@RequestBody VocaDO vocaDO, @PathVariable Long userId) {
-
-        System.out.println("userId = " + userId);
         Voca voca = vocaService.createVoca(vocaDO, userId);
         return voca;
     }

@@ -19,6 +19,7 @@ public interface UserService {
 
     Long deleteVoca(Long userId, Long vocaId);
 
+    Long getVocaCntByIsKnown(Long userId, Boolean isKnown);
 
     List<Voca> test(Long userId, Integer cnt, Boolean isKnown);
 
