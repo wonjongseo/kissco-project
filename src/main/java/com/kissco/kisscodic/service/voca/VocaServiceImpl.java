@@ -33,71 +33,71 @@ public class VocaServiceImpl implements VocaService{
     private final UserRepository userRepository;
     private final UserVocaRepository userVocaRepository;
 
-//    @Override
-//    @Transactional
-//    public Voca createVoca(VocaDO vocaDO, Long userId)  {
-//
-//        Optional<Voca> isExist;
-//
-//        if(vocaDO.getSource().equals("ko")){
-//            isExist = vocaRepository.findByWord(vocaDO.getWord());
-//        }
-//        else  {
-//            isExist = vocaRepository.findByMean(vocaDO.getWord());
-//        }
-//
-//        Voca voca = null;
-//        User user = userRepository.findById(userId).get(0);
-//
-//        if (isExist.isEmpty()) {
-//
-//            String foundMean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
-//
-//            voca = VocaDO.createVoca(vocaDO, foundMean);
-//
-//            user.addUserVoca(voca);
-//            vocaRepository.save(voca);
-//        }
-//        else {
-//            voca =  isExist.get();
-//            List<Voca> vocas =userRepository.findWord(userId, voca.getWord());
-//            if(vocas.isEmpty()){
-//                user.addUserVoca(voca);
-//                vocaRepository.save(voca);
-//            }
-//        }
-//
-//        return voca;
-//    }
-
     @Override
     @Transactional
     public Voca createVoca(VocaDO vocaDO, Long userId)  {
 
-        String foundMean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
+        Optional<Voca> isExist;
 
-        Optional<UserVoca>  isExist ;
         if(vocaDO.getSource().equals("ko")){
-
-            isExist = userVocaRepository.IsExistVoca( vocaDO.getWord(), foundMean);
+            isExist = vocaRepository.findByWord(vocaDO.getWord());
         }
         else  {
-            isExist = userVocaRepository.IsExistVoca( foundMean, vocaDO.getWord());
+            isExist = vocaRepository.findByMean(vocaDO.getWord());
         }
 
+        Voca voca = null;
         User user = userRepository.findById(userId).get(0);
 
         if (isExist.isEmpty()) {
 
-           Voca voca = VocaDO.createVoca(vocaDO, foundMean);
+            String foundMean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
+
+            voca = VocaDO.createVoca(vocaDO, foundMean);
 
             user.addUserVoca(voca);
             vocaRepository.save(voca);
-            return voca;
         }
-        Voca voca = isExist.get().getVoca();
+        else {
+            voca =  isExist.get();
+            List<Voca> vocas =userRepository.findWord(userId, voca.getWord());
+            if(vocas.isEmpty()){
+                user.addUserVoca(voca);
+                vocaRepository.save(voca);
+            }
+        }
+
         return voca;
     }
+
+//    @Override
+//    @Transactional
+//    public Voca createVoca(VocaDO vocaDO, Long userId)  {
+//
+//        String foundMean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
+//
+//        Optional<UserVoca>  isExist ;
+//        if(vocaDO.getSource().equals("ko")){
+//
+//            isExist = userVocaRepository.IsExistVoca( vocaDO.getWord(), foundMean);
+//        }
+//        else  {
+//            isExist = userVocaRepository.IsExistVoca( foundMean, vocaDO.getWord());
+//        }
+//
+//        User user = userRepository.findById(userId).get(0);
+//
+//        if (isExist.isEmpty()) {
+//
+//           Voca voca = VocaDO.createVoca(vocaDO, foundMean);
+//
+//            user.addUserVoca(voca);
+//            vocaRepository.save(voca);
+//            return voca;
+//        }
+//        Voca voca = isExist.get().getVoca();
+//        return voca;
+//    }
 
     @Override
     @Transactional
