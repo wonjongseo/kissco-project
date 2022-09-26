@@ -70,34 +70,6 @@ public class VocaServiceImpl implements VocaService{
         return voca;
     }
 
-//    @Override
-//    @Transactional
-//    public Voca createVoca(VocaDO vocaDO, Long userId)  {
-//
-//        String foundMean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
-//
-//        Optional<UserVoca>  isExist ;
-//        if(vocaDO.getSource().equals("ko")){
-//
-//            isExist = userVocaRepository.IsExistVoca( vocaDO.getWord(), foundMean);
-//        }
-//        else  {
-//            isExist = userVocaRepository.IsExistVoca( foundMean, vocaDO.getWord());
-//        }
-//
-//        User user = userRepository.findById(userId).get(0);
-//
-//        if (isExist.isEmpty()) {
-//
-//           Voca voca = VocaDO.createVoca(vocaDO, foundMean);
-//
-//            user.addUserVoca(voca);
-//            vocaRepository.save(voca);
-//            return voca;
-//        }
-//        Voca voca = isExist.get().getVoca();
-//        return voca;
-//    }
 
     @Override
     @Transactional
