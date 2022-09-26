@@ -92,9 +92,6 @@ public class UserServiceImpl implements UserService {
 
 
     private boolean isValidateFormForTest(Long userId, Boolean isKnown, Integer cnt) {
-        if (cnt < 4)
-            throw  new CustomException(ErrorCode.LESS_TEST_COUNT);
-
         if (cnt > userRepository.countVocaByUserId(userId ,isKnown))
             throw new CustomException(ErrorCode.INVALID_VOCA_CNT);
         return true;
