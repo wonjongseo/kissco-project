@@ -21,4 +21,6 @@ public class Voca {
     @Column(length = 50)
     private String mean;
 
+    @Column(columnDefinition = "tinyint(1) default 0")
+    private boolean isMine;
 }

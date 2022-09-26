@@ -30,8 +30,7 @@ public class UserVoca {
     @Column(columnDefinition = "tinyint(1) default 0")
     private boolean isKnown;
 
-    @Column(columnDefinition = "tinyint(1) default 0")
-    private boolean isMine;
+
 
 
 }

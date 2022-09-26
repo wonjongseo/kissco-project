@@ -15,9 +15,9 @@ public interface UserVocaRepository extends JpaRepository<UserVoca, Long> {
     List<UserVoca> findVocasByUserId(Long userId);
 
 
-    @Query("select uv From UserVoca uv join uv.user u join uv.voca v where  uv.isMine= true  and u.id = :id and v.mean = :mean and v.word = :word")
+    @Query("select uv From UserVoca uv join uv.user u join uv.voca v where  v.isMine= true  and u.id = :id and v.mean = :mean and v.word = :word")
     Optional<UserVoca> IsExistMyVoca(@Param("id")Long userId, @Param("word") String word, @Param("mean") String mean);
 
-    @Query("select uv From UserVoca uv join uv.user u join uv.voca v where  uv.isMine= false  and v.mean = :mean and v.word = :word")
+    @Query("select uv From UserVoca uv join uv.user u join uv.voca v where  v.isMine= false  and v.mean = :mean and v.word = :word")
     Optional<UserVoca> IsExistVoca( @Param("word") String word, @Param("mean") String mean);
 }

@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
 
         for (UserVoca uv: userVocas){
             userVocaRepository.deleteById(uv.getId());
-            if(uv.isMine()) {
+            if(uv.getVoca().isMine()) {
                 Voca voca = uv.getVoca();
                 vocaRepository.deleteById(voca.getId());
             }

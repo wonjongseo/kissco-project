@@ -105,7 +105,6 @@ public class VocaServiceImpl implements VocaService{
 
         if(userVocaRepository.IsExistMyVoca(userId, vocaDO.getWord(), vocaDO.getMean()).isPresent()){
             UserVoca userVoca = userVocaRepository.IsExistMyVoca(userId, vocaDO.getWord(), vocaDO.getMean()).get();
-            System.out.println("userVoca.getId() = " + userVoca.getId());
             throw new CustomException(ErrorCode.DUPLICATE_MY_VOCA);
         }
 
@@ -113,7 +112,7 @@ public class VocaServiceImpl implements VocaService{
         User user = userRepository.findUserById(userId).get(0);
         Voca newVoca = VocaDO.createMyVoca(vocaDO);
 
-        user.addMyUserVoca(newVoca);
+        user.addUserVoca(newVoca);
         vocaRepository.save(newVoca);
         return newVoca;
     }

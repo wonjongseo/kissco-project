@@ -39,7 +39,7 @@ public class VocaDO {
         isKorea(vocaDO.getWord());
 
         Voca voca = new Voca();
-
+        voca.setMine(true);
         voca.setWord(vocaDO.getWord());
         voca.setMean(vocaDO.getMean());
 
