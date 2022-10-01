@@ -1,5 +1,6 @@
 package com.kissco.kisscodic.controller.voca;
 
+import com.kissco.kisscodic.dto.voca.VocaResponseDTO;
 import com.kissco.kisscodic.entity.Voca;
 import com.kissco.kisscodic.dto.voca.VocaDO;
 import com.kissco.kisscodic.service.user.UserService;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 
@@ -32,8 +34,8 @@ public class VocaControllerImpl implements  VocaController{
     @GetMapping
     public Map<String,String> searchVoca(@RequestParam String word , @RequestParam String source) {
         return vocaService.findVoca(word,source);
-
     }
+
 
     /**
      * (개요) 단어 저장

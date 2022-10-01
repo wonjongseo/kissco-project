@@ -1,5 +1,6 @@
 package com.kissco.kisscodic.service.user;
 
+import com.kissco.kisscodic.dto.voca.VocaResponseDTO;
 import com.kissco.kisscodic.entity.User;
 import com.kissco.kisscodic.entity.UserVoca;
 import com.kissco.kisscodic.entity.Voca;
@@ -26,10 +27,13 @@ public class UserServiceImpl implements UserService {
     private final VocaRepository vocaRepository;
 
     @Override
-    public List<Voca> findAllWordsByUserIdWherePage(Long userId, Integer page, String sort, Boolean isKnown) {
-        isValidateFormForVocaList(userId, isKnown, page);
+    public List<VocaResponseDTO> findAllWordsByUserIdWherePage(Long userId, Integer page, String sort, Boolean isKnown) {
+        if(isKnown == null)
+            return userRepository.findVocas(userId, page,sort);
 
+        isValidateFormForVocaList(userId, isKnown, page);
         return userRepository.findVocas(userId, page,sort, isKnown);
+
     }
 
     @Override

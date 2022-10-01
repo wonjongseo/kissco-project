@@ -1,6 +1,7 @@
 package com.kissco.kisscodic.repository.user;
 
 
+import com.kissco.kisscodic.dto.voca.VocaResponseDTO;
 import com.kissco.kisscodic.entity.User;
 import com.kissco.kisscodic.entity.Voca;
 import com.kissco.kisscodic.exception.CustomException;
@@ -43,22 +44,42 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public List<Voca> findVocas(Long userId, Integer page, String sort, Boolean isKnown) {
+    public List<VocaResponseDTO> findVocas(Long userId, Integer page, String sort, Boolean isKnown) {
         String jpql = "";
 
         if (sort.equals("asc")) {
-            jpql = "select v from User u join u.userVocas vc join vc.voca v where u.id = :userId and vc.isKnown = :isKnown order by vc.id asc";
+            jpql = "select new com.kissco.kisscodic.dto.voca.VocaResponseDTO(v.id, v.word,v.mean,vc.isKnown) from User u join u.userVocas vc join vc.voca v where u.id = :userId and vc.isKnown = :isKnown order by vc.id asc";
 
         } else if (sort.equals("desc")) {
-            jpql = "select v from User u join u.userVocas vc join vc.voca v where u.id = :userId and vc.isKnown = :isKnown order by vc.id desc";
+            jpql = "select new com.kissco.kisscodic.dto.voca.VocaResponseDTO(v.id, v.word,v.mean,vc.isKnown) from User u join u.userVocas vc join vc.voca v where u.id = :userId and vc.isKnown = :isKnown order by vc.id desc";
         } else throw new CustomException(ErrorCode.MISMATCH_ARGUMENT);
-        return em.createQuery(jpql, Voca.class)
+        return em.createQuery(jpql, VocaResponseDTO.class)
                 .setParameter("userId", userId)
                 .setParameter("isKnown", isKnown)
                 .setFirstResult((page - 1) * MAX_PAGE_COUNT)
-                .setMaxResults((page - 1) * MAX_PAGE_COUNT + MAX_PAGE_COUNT)
+                .setMaxResults(MAX_PAGE_COUNT)
 
                 .getResultList();
+    }
+
+    @Override
+    public List<VocaResponseDTO> findVocas(Long userId, Integer page, String sort) {
+        String jpql = "select new com.kissco.kisscodic.dto.voca.VocaResponseDTO(v.id, v.word,v.mean,vc.isKnown) from User u join u.userVocas vc join vc.voca v where u.id = :userId ";
+
+        if (sort.equals("asc")) {
+            jpql += "order by vc.id asc";
+        } else if (sort.equals("desc")) {
+            jpql += "order by vc.id desc";
+        } else throw new CustomException(ErrorCode.MISMATCH_ARGUMENT);
+        return em.createQuery(jpql, VocaResponseDTO.class)
+                .setParameter("userId", userId)
+                .setFirstResult((page - 1) * MAX_PAGE_COUNT)
+                .setMaxResults(MAX_PAGE_COUNT)
+                .getResultList();
+
+        // 0 * 10
+        // 10 ~  (10+ 10)
+        // 10 ~ 20
     }
 
     @Override

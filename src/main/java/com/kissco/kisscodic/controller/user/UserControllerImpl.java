@@ -1,5 +1,6 @@
 package com.kissco.kisscodic.controller.user;
 
+import com.kissco.kisscodic.dto.voca.VocaResponseDTO;
 import com.kissco.kisscodic.entity.Voca;
 import com.kissco.kisscodic.service.user.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,14 +34,15 @@ public class UserControllerImpl implements UserController {
      */
     @Override
     @GetMapping("/vocas/{userId}")
-    public ResponseEntity<List<Voca>> getAllVoca(
+    public ResponseEntity<List<VocaResponseDTO>> getAllVoca(
             @PathVariable Long userId,
             @RequestParam Integer page,
-            @RequestParam Boolean isKnown,
+            @RequestParam(required = false) Boolean isKnown,
             @RequestParam String sort
             ) {
 
-        List<Voca> allWordsByUserIdWherePage = userService.findAllWordsByUserIdWherePage(userId, page,sort, isKnown);
+
+        List<VocaResponseDTO> allWordsByUserIdWherePage = userService.findAllWordsByUserIdWherePage(userId, page,sort, isKnown);
 
         return new ResponseEntity<>(allWordsByUserIdWherePage, HttpStatus.OK);
     }
