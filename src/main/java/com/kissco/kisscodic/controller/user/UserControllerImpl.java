@@ -32,7 +32,6 @@ public class UserControllerImpl implements UserController {
      *  1. 저장된 단어 / 10 보다 큰 page 를 입력 시
      *  2. 최신순, 오래된 순 외의 정렬 방법 선택 시
      */
-    @Override
     @GetMapping("/vocas/{userId}")
     public ResponseEntity<List<VocaResponseDTO>> getAllVoca(
             @PathVariable Long userId,

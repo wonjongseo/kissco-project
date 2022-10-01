@@ -44,13 +44,12 @@ public class AuthController {
        (예외) 비밀번호가 일치하지 않은 경우 예외.
      */
     @PostMapping("/login")
-    public ResponseEntity<User> login( @RequestBody LoginDto loginDto, HttpSession session) {
+    public ResponseEntity<User> login( @RequestBody LoginDto loginDto, HttpServletRequest request) {
         User user = authService.login(loginDto);
+        HttpSession session = request.getSession();
 
-//        HttpSession session = request.getSession();
         session.setAttribute("userId",user.getId());
         session.setAttribute("email",user.getEmail());
-
 
         return ResponseEntity.ok().body(user);
 
