@@ -25,7 +25,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class VocaServiceImpl implements VocaService{
+public class VocaServiceImpl implements VocaService {
 
     private final VocaRepository vocaRepository;
     private final ApiService apiService;
@@ -33,11 +33,10 @@ public class VocaServiceImpl implements VocaService{
     private final UserRepository userRepository;
     private final UserVocaRepository userVocaRepository;
 
-    @Override
     @Transactional
     public Voca createVoca(VocaDO vocaDO, Long userId)  {
 
-        Optional<Voca> isExist;
+        Optional<List<Voca>> isExist;
 
         if(vocaDO.getSource().equals("ko")){
             isExist = vocaRepository.findByWord(vocaDO.getWord());
@@ -59,7 +58,7 @@ public class VocaServiceImpl implements VocaService{
             vocaRepository.save(voca);
         }
         else {
-            voca =  isExist.get();
+            voca =  isExist.get().get(0);
             List<Voca> vocas =userRepository.findWord(userId, voca.getWord());
             if(vocas.isEmpty()){
                 user.addUserVoca(voca);
@@ -71,7 +70,6 @@ public class VocaServiceImpl implements VocaService{
     }
 
 
-    @Override
     @Transactional
     public Voca createMyVoca(VocaDO vocaDO, Long userId) {
 
@@ -89,7 +87,6 @@ public class VocaServiceImpl implements VocaService{
         return newVoca;
     }
 
-    @Override
     public Map<String,String> findVoca(String word ,String source) {
         String mean = apiService.getMean(word, source);
 
@@ -99,7 +96,6 @@ public class VocaServiceImpl implements VocaService{
         return returnJson;
     }
 
-    @Override
     public HSSFWorkbook download(Long userId) {
         List<Voca> allWordsByUserId = userRepository.findAllWordsByUserId(userId);
         return fileMaker.createFile(allWordsByUserId);
