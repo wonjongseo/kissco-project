@@ -75,11 +75,21 @@ public class UserServiceImpl implements UserService {
 
         isValidateFormForTest(userId, isKnown, cnt);
 
-        List<Voca> words = userRepository.findWordsForTest(userId, isKnown);
+        if(isKnown ==null) {
+            List<Voca> words = userRepository.findWordsForTest(userId);
 
-        Collections.shuffle(words);
+            Collections.shuffle(words);
 
-        return words.subList(0,cnt);
+            return words.subList(0,cnt);
+        }
+        else {
+            List<Voca> words = userRepository.findWordsForTest(userId, isKnown);
+
+            Collections.shuffle(words);
+
+            return words.subList(0,cnt);
+        }
+
     }
 
     @Override
@@ -96,7 +106,14 @@ public class UserServiceImpl implements UserService {
 
 
     private boolean isValidateFormForTest(Long userId, Boolean isKnown, Integer cnt) {
-        if (cnt > userRepository.countVocaByUserId(userId ,isKnown))
+        Long totalCnt = 0L;
+        if(isKnown == null) {
+            totalCnt =userRepository.countVocaByUserId(userId);
+        }
+        else {
+            totalCnt= userRepository.countVocaByUserId(userId ,isKnown);
+        }
+        if (cnt > totalCnt)
             throw new CustomException(ErrorCode.INVALID_VOCA_CNT);
         return true;
     }
@@ -113,6 +130,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Long getVocaCntByIsKnown(Long userId, Boolean isKnown) {
+        if(isKnown == null) {
+          return   userRepository.countVocaByUserId(userId);
+        }
         return userRepository.countVocaByUserId(userId, isKnown);
     }
 

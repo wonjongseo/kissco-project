@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public interface VocaRepository extends JpaRepository<Voca, Long> {
 
-    Optional<List<Voca>> findByWord(String word);
-    Optional<List<Voca>> findByMean(String word);
+
 
     List<Voca> findAll();
 
     Optional<Voca> findByWordAndMean(String word, String mean);
+    Optional<Voca> findByMeanAndWord(String word,String mean);
 }

@@ -18,25 +18,29 @@ public class VocaDO {
     public static Voca createVoca(VocaDO vocaDO, String mean) {
         Voca voca = new Voca();
 
-        if (vocaDO.getSource().equals("ja")) {
-            voca.setWord(mean);
-            voca.setMean(vocaDO.getWord());
-        }
-        else {
+        if(isKorea(vocaDO.getWord())) {
             voca.setWord(vocaDO.getWord());
             voca.setMean(mean);
+        }
+        else {
+            voca.setWord(mean);
+            voca.setMean(vocaDO.getWord());
         }
 
         return voca;
     }
 
-    private static boolean isKorea(String word) {
+    public static boolean isKorea(String word) {
         if(!word.matches(".*[가-힣]+.*"))
-            throw new CustomException(ErrorCode.MISMATCH_WORD);
+            return false;
         return true;
     }
+
+
     public static Voca createMyVoca(VocaDO vocaDO) {
-        isKorea(vocaDO.getWord());
+        if(!isKorea(vocaDO.getWord())){
+            throw new CustomException(ErrorCode.MISMATCH_WORD);
+        }
 
         Voca voca = new Voca();
         voca.setMine(true);

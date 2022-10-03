@@ -5,6 +5,7 @@ import com.kissco.kisscodic.entity.Voca;
 import org.springframework.http.ResponseEntity;
 
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface UserController {

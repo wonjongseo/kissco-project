@@ -17,7 +17,7 @@ public enum ErrorCode {
 
 
     /* 401 UNAUTHORIZED : 인증되지 않은 사용자 */
-    INVALID_PASSWORD(UNAUTHORIZED, "비밀번호가 옳바르지 않습니다"),
+    INVALID_PASSWORD(UNAUTHORIZED, "비밀번호가 올바르지 않습니다"),
     INVALID_AUTHENTICATION(UNAUTHORIZED, "로그인이 필요합니다"),
     NOT_FOUND_VOCA(UNAUTHORIZED, "데이터가 존재하지 않습니다"),
 

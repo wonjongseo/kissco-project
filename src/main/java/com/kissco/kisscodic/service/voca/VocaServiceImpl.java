@@ -33,32 +33,35 @@ public class VocaServiceImpl implements VocaService {
     private final UserRepository userRepository;
     private final UserVocaRepository userVocaRepository;
 
+
+
     @Transactional
     public Voca createVoca(VocaDO vocaDO, Long userId)  {
 
-        Optional<List<Voca>> isExist;
+        Optional<Voca> isExist;
 
-        if(vocaDO.getSource().equals("ko")){
-            isExist = vocaRepository.findByWord(vocaDO.getWord());
+
+
+        String foundMean ;
+        if(VocaDO.isKorea(vocaDO.getWord())){
+            foundMean= apiService.getMean(vocaDO.getWord(), "ko");
+            isExist = vocaRepository.findByWordAndMean(vocaDO.getWord(),foundMean);
         }
         else  {
-            isExist = vocaRepository.findByMean(vocaDO.getWord());
+            foundMean= apiService.getMean(vocaDO.getWord(), "ja");
+            isExist = vocaRepository.findByMeanAndWord(vocaDO.getWord(),foundMean);
         }
 
         Voca voca = null;
         User user = userRepository.findUserById(userId).get(0);
 
         if (isExist.isEmpty()) {
-
-            String foundMean = apiService.getMean(vocaDO.getWord(), vocaDO.getSource());
-
             voca = VocaDO.createVoca(vocaDO, foundMean);
-
             user.addUserVoca(voca);
             vocaRepository.save(voca);
         }
         else {
-            voca =  isExist.get().get(0);
+            voca =  isExist.get();
             List<Voca> vocas =userRepository.findWord(userId, voca.getWord());
             if(vocas.isEmpty()){
                 user.addUserVoca(voca);
@@ -87,14 +90,29 @@ public class VocaServiceImpl implements VocaService {
         return newVoca;
     }
 
-    public Map<String,String> findVoca(String word ,String source) {
-        String mean = apiService.getMean(word, source);
+    public Map<String,String> findVoca(String word ) {
+
+        String foundMean ;
+        if(VocaDO.isKorea(word)){
+            foundMean= apiService.getMean(word, "ko");
+        }
+        else {
+            foundMean= apiService.getMean(word, "ja");
+        }
 
         Map<String, String> returnJson = new HashMap<>();
-        returnJson.put("mean", mean);
+        returnJson.put("mean", foundMean);
 
         return returnJson;
     }
+//    public Map<String,String> findVoca(String word ,String source) {
+//        String mean = apiService.getMean(word, source);
+//
+//        Map<String, String> returnJson = new HashMap<>();
+//        returnJson.put("mean", mean);
+//
+//        return returnJson;
+//    }
 
     public HSSFWorkbook download(Long userId) {
         List<Voca> allWordsByUserId = userRepository.findAllWordsByUserId(userId);

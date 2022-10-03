@@ -97,6 +97,20 @@ public class UserRepositoryImpl implements UserRepository {
                 .getResultList();
     }
 
+    @Override
+    public List<Voca> findWordsForTest(Long userId) {
+        return em.createQuery("select v from User u join u.userVocas vc join vc.voca v where u.id = :userId", Voca.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
+
+    @Override
+    public Long countVocaByUserId(Long userId) {
+        return em.createQuery("select count (v) from User u join u.userVocas vc join vc.voca v where u.id = :userId", Long.class)
+                .setParameter("userId", userId)
+                .getSingleResult();
+    }
+
 
     @Override
     public Long countVocaByUserId(Long userId ,Boolean isKnown) {

@@ -32,8 +32,8 @@ public class VocaControllerImpl implements  VocaController{
      */
     @Override
     @GetMapping
-    public Map<String,String> searchVoca(@RequestParam String word , @RequestParam String source) {
-        return vocaService.findVoca(word,source);
+    public Map<String,String> searchVoca(@RequestParam String word) {
+        return vocaService.findVoca(word);
     }
 
 

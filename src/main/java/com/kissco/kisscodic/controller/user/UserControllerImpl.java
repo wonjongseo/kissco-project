@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +22,8 @@ public class UserControllerImpl implements UserController {
     private final UserService userService;
 
     /**
-     * 개요)
-     * 	 유저가 저장한 단어 리스트 확인.
+     * 개요) 유저가 저장한 단어 리스트 확인.
+     *
      *
      * 설명)
      * 	1. 암기 혹은 미암기의 카테고리를 선택한 후 카테고리 별로 단어 리스트를 본다.
@@ -34,12 +36,12 @@ public class UserControllerImpl implements UserController {
      */
     @GetMapping("/vocas/{userId}")
     public ResponseEntity<List<VocaResponseDTO>> getAllVoca(
-            @PathVariable Long userId,
+           @PathVariable Long userId,
             @RequestParam Integer page,
             @RequestParam(required = false) Boolean isKnown,
             @RequestParam String sort
             ) {
-
+        System.out.println("userId = " + userId);
 
         List<VocaResponseDTO> allWordsByUserIdWherePage = userService.findAllWordsByUserIdWherePage(userId, page,sort, isKnown);
 
@@ -51,11 +53,9 @@ public class UserControllerImpl implements UserController {
      * (개요) 단어 개수 확인
      */
     @GetMapping("/vocas/cnt/{userId}")
-    public Map<String, Long> getVocaCnt(@PathVariable Long userId, @RequestParam Boolean isKnown) {
+    public Map<String, Long> getVocaCnt(@PathVariable Long userId, @RequestParam(required = false) Boolean isKnown) {
         Map<String, Long> cnt = new HashMap<>();
         cnt.put("count", userService.getVocaCntByIsKnown(userId, isKnown));
-
-
         return cnt;
 
     }
@@ -92,7 +92,7 @@ public class UserControllerImpl implements UserController {
     @GetMapping("/vocas/test/{userId}")
     public List<Voca> userVocaTest(@PathVariable("userId") Long userId,
                            @RequestParam(name = "cnt") Integer cnt,
-                           @RequestParam(name = "isKnown") Boolean isKnown
+                           @RequestParam(required = false,name = "isKnown") Boolean isKnown
                            ) {
 
 

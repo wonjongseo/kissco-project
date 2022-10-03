@@ -24,5 +24,7 @@ public interface UserRepository  {
     List<Voca> findAllWordsByUserId(Long  userId);
 
     List<Voca> findWordsForTest(Long userId, Boolean isKnown);
+    List<Voca> findWordsForTest(Long userId);
 
+    Long countVocaByUserId(Long userId);
 }

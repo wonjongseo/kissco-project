@@ -10,6 +10,6 @@ import java.util.Map;
 public interface VocaService {
     Voca createVoca(VocaDO vocaDO,  Long userId) ;
     Voca createMyVoca(VocaDO vocaDO,  Long userId) ;
-    Map<String,String> findVoca(String word ,String source) ;
+    Map<String,String> findVoca(String word) ;
     HSSFWorkbook download(Long userId);
 }
